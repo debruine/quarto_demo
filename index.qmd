@@ -1,0 +1,8 @@
+---
+title: "Table printing demo"
+author: "Lisa DeBruine"
+---
+
+This website contains my explorations of Quarto.
+
+* [Replicating df_print](table.html)

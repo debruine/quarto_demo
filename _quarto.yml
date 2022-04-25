@@ -1,0 +1,20 @@
+project:
+  type: website
+
+website:
+  title: "quarto_demo"
+  navbar:
+    background: primary
+    left:
+      - href: index.qmd
+        text: Home
+      - href: table.qmd
+        text: df_print
+
+format:
+  html:
+    theme: yeti
+    css: styles.css
+
+
+
