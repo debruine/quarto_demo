@@ -6,9 +6,7 @@ website:
   title: "quarto_demo"
   navbar:
     background: primary
-    left:
-      - href: index.qmd
-        text: Home
+    right:
       - href: table.qmd
         text: df_print
 
