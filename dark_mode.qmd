@@ -5,7 +5,27 @@ library(ggplot2)
 library(ggthemes)
 ```
 
+## Demo
 
+Toggle dark and light mode to see the plot switch. Inspired by [Marc-Aurèle Rivière](https://twitter.com/mariviere1/status/1521534422826237955).
+
+<div class="light-mode">
+
+```{r, echo = FALSE}
+g <- ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
+  geom_violin()
+g + theme_solarized(light = TRUE)
+```
+
+</div>
+
+<div class="dark-mode">
+
+```{r, echo = FALSE}
+g + theme_solarized(light = FALSE)
+```
+
+</div>
 
 ## Setup
 
@@ -80,3 +100,26 @@ g + theme_solarized(light = FALSE)
 ```
 
 </div>
+
+## Auto-theme
+
+```{r}
+library(knitr)
+knit_print.ggplot <- function (x, options, ...) {
+  cat('\n<div class="dark-mode">\n')
+  ggplot2:::print.ggplot(x + ggthemes::theme_solarized(light = FALSE))
+  cat('</div>\n')
+  cat('<div class="light-mode">\n')
+  ggplot2:::print.ggplot(x + ggthemes::theme_solarized(light = TRUE))
+  cat('</div>\n\n')
+}
+registerS3method("knit_print", "ggplot", knit_print.ggplot)
+```
+
+This only works if you set results='asis' in the code chunk for the plot. I'll see if I can fix this. 
+
+```{r, results='asis'}
+g
+```
+
+
