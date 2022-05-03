@@ -49,7 +49,7 @@ g <- ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
   geom_violin()
 ```
 
-Wrap the light themed one in 
+Wrap light-themed content in 
 
 ```html
 <div class="light-mode">
@@ -57,7 +57,7 @@ Wrap the light themed one in
 </div>
 ```
 
-and the dark themed one in 
+and dark-themed content in 
 
 ```html
 <div class="dark-mode">
