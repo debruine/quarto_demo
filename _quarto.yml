@@ -9,10 +9,14 @@ website:
     right:
       - href: table.qmd
         text: df_print
+      - href: dark_mode.qmd
+        text: dark mode
 
 format:
   html:
-    theme: yeti
+    theme:
+      light: [flatly, light.scss]
+      dark: [darkly, dark.scss]
     css: styles.css
 
 

@@ -1,0 +1,82 @@
+# Dark Mode
+
+```{r, include = FALSE}
+library(ggplot2)
+library(ggthemes)
+```
+
+
+
+## Setup
+
+Edit the _quarto.yml file to add your light and dark themes, plus .scss files for each
+
+```yml
+format:
+  html:
+    theme:
+      light: [flatly, light.scss]
+      dark: [darkly, dark.scss]
+```
+
+Create .scss files for light and dark mode. Set blocks with the class .light-mode to `display: none;` in dark mode, and blocks with the class .dark-mode to `display: none;` in light mode.
+
+light.scss:
+
+```css
+/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+.light-mode { display: block; }
+.dark-mode { display: none; }
+```
+
+dark.scss:
+
+```css
+/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+.dark-mode { display: block; }
+.light-mode { display: none; }
+```
+
+## Switching
+
+
+```{r}
+g <- ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
+  geom_violin()
+```
+
+Wrap the light themed one in 
+
+```html
+<div class="light-mode">
+...code...
+</div>
+```
+
+and the dark themed one in 
+
+```html
+<div class="dark-mode">
+...code...
+</div>
+```
+
+<div class="light-mode">
+
+```{r, class.output="light-mode"}
+g + theme_solarized(light = TRUE)
+```
+
+</div>
+
+<div class="dark-mode">
+
+```{r}
+g + theme_solarized(light = FALSE)
+```
+
+</div>
