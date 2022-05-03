@@ -103,6 +103,8 @@ g + theme_solarized(light = FALSE)
 
 ## Auto-theme
 
+If you add this code at the top of your script, it will automatically theme plots for you without the code above (you still need the setup). I'm using the ggthemes `theme_solarized()` in light and dark versions, but you can add any theme you like or a custom theme.
+
 ```{r}
 library(knitr)
 knit_print.ggplot <- function (x, options, ...) {

@@ -228,6 +228,7 @@
 </section>
 <section id="auto-theme" class="level2">
 <h2 class="anchored" data-anchor-id="auto-theme">Auto-theme</h2>
+<p>If you add this code at the top of your script, it will automatically theme plots for you without the code above (you still need the setup). I’m using the ggthemes <code>theme_solarized()</code> in light and dark versions, but you can add any theme you like or a custom theme.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>knit_print.ggplot <span class="ot">&lt;-</span> <span class="cf">function</span> (x, options, ...) {</span>
