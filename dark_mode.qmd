@@ -9,23 +9,21 @@ library(ggthemes)
 
 Toggle dark and light mode to see the plot switch. Inspired by [Marc-Aurèle Rivière](https://twitter.com/mariviere1/status/1521534422826237955).
 
-<div class="light-mode">
 
 ```{r, echo = FALSE}
+#| classes: light-mode
 g <- ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
-  geom_violin()
+  geom_violin() +
+  labs(title = "Diamond price by cut")
+
 g + theme_solarized(light = TRUE)
 ```
 
-</div>
-
-<div class="dark-mode">
-
 ```{r, echo = FALSE}
+#| classes: dark-mode
 g + theme_solarized(light = FALSE)
 ```
 
-</div>
 
 ## Setup
 
@@ -66,40 +64,23 @@ dark.scss:
 
 ```{r}
 g <- ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
-  geom_violin()
+  geom_violin() +
+  labs(title = "Diamond price by cut")
 ```
 
-Wrap light-themed content in 
+Add `#| classes: light-mode"` or `#| classes: dark-mode` to the code chunks to display their output conditionally.
 
-```html
-<div class="light-mode">
-...code...
-</div>
-```
-
-and dark-themed content in 
-
-```html
-<div class="dark-mode">
-...code...
-</div>
-```
-
-<div class="light-mode">
-
-```{r, class.output="light-mode"}
+```{r}
+#| classes: light-mode
 g + theme_solarized(light = TRUE)
 ```
 
-</div>
-
-<div class="dark-mode">
 
 ```{r}
+#| classes: dark-mode
 g + theme_solarized(light = FALSE)
 ```
 
-</div>
 
 ## Auto-theme
 

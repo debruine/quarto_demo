@@ -56,7 +56,7 @@ Prints tables with 10 or fewer rows using `kableExtra::kable()` and longer table
 * rownames (defaults to FALSE)
 * pageLength (defaults to 10)
 * escape (defaults to TRUE)
-* caption
+* table.cap
 
 
 ```{r}
@@ -74,7 +74,7 @@ knit_print.data.frame <- function (x, options, ...) {
   rownames <- options$rownames %||% FALSE
   pageLength <- options$pageLength %||% 10 
   escape <- options$escape %||% TRUE
-  caption <- options$caption
+  caption <- options$table.cap 
   
   # use DT for longer tables in html
   if (nrow(x) > pageLength & knitr::is_html_output()) {
@@ -202,18 +202,18 @@ tbl5
 tbl26
 ```
 
-### fig.cap
+### table.cap
 
-Figure captions are displaying twice (the caption from DT or kable is in purple).
+Table captions.
 
-```{r, fig.cap="This is my figure caption for a tibble with 5 rows"}
-# fig.cap="This is my figure caption for a tibble with 5 rows"
+```{r}
+#| table.cap: "This is my table caption for a tibble with 5 rows"
 tbl5
 ```
 
 
-```{r, fig.cap="This is my figure caption for a tibble with 26 rows"}
-# fig.cap="This is my figure caption for a tibble with 26 rows"
+```{r}
+#| table.cap: "This is my table caption for a tibble with 26 rows"
 tbl26
 ```
 
