@@ -245,14 +245,19 @@
 <div class="cell">
 <div class="sourceCode" id="cb8"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>knit_print.ggplot <span class="ot">&lt;-</span> <span class="cf">function</span> (x, options, ...) {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">&lt;div class="dark-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">:::</span><span class="fu">print.ggplot</span>(x <span class="sc">+</span> ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;div class="light-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">:::</span><span class="fu">print.ggplot</span>(x <span class="sc">+</span> ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n\n</span><span class="st">'</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">registerS3method</span>(<span class="st">"knit_print"</span>, <span class="st">"ggplot"</span>, knit_print.ggplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  orig_theme <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">theme_get</span>()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">on.exit</span>(ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(orig_theme))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">&lt;div class="dark-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">:::</span><span class="fu">print.ggplot</span>(x)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;div class="light-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">:::</span><span class="fu">print.ggplot</span>(x)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n\n</span><span class="st">'</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">registerS3method</span>(<span class="st">"knit_print"</span>, <span class="st">"ggplot"</span>, knit_print.ggplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This only works if you set <code>results='asis'</code> in the code chunk for the plot. I’ll see if I can fix this.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -266,16 +271,28 @@
 <p><img src="dark_mode_files/figure-html/toggle-demo-2.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
-<p>However, this solution doesn’t work with plots that use the <code>theme()</code> function, as the dark and light themes will overwrite any custom theme (i.e., the title below should be red, but isn’t in either version).</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This doesn’t work if you add a complete theme to a plot.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="dark-mode">
 <div class="cell-output-display">
-<p><img src="dark_mode_files/figure-html/toggle-with-theme-1.png" class="img-fluid" style="width:100.0%"></p>
+<p><img src="dark_mode_files/figure-html/toggle-theme-set-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
 <div class="light-mode">
 <div class="cell-output-display">
-<p><img src="dark_mode_files/figure-html/toggle-with-theme-2.png" class="img-fluid" style="width:100.0%"></p>
+<p><img src="dark_mode_files/figure-html/toggle-theme-set-2.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<p>However, it will work if you just add theme elements with <code>theme()</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="dark-mode">
+<div class="cell-output-display">
+<p><img src="dark_mode_files/figure-html/toggle-theme-1.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<div class="light-mode">
+<div class="cell-output-display">
+<p><img src="dark_mode_files/figure-html/toggle-theme-2.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
 

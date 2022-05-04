@@ -124,11 +124,16 @@ If you add the following code at the top of your script, it will automatically t
 ```{r}
 library(knitr)
 knit_print.ggplot <- function (x, options, ...) {
+  orig_theme <- ggplot2::theme_get()
+  on.exit(ggplot2::theme_set(orig_theme))
+  
   cat('\n<div class="dark-mode">\n')
-  ggplot2:::print.ggplot(x + ggthemes::theme_solarized(light = FALSE))
+  ggplot2::theme_set(ggthemes::theme_solarized(light = FALSE))
+  ggplot2:::print.ggplot(x)
   cat('</div>\n')
   cat('<div class="light-mode">\n')
-  ggplot2:::print.ggplot(x + ggthemes::theme_solarized(light = TRUE))
+  ggplot2::theme_set(ggthemes::theme_solarized(light = TRUE))
+  ggplot2:::print.ggplot(x)
   cat('</div>\n\n')
 }
 registerS3method("knit_print", "ggplot", knit_print.ggplot)
@@ -140,8 +145,14 @@ This only works if you set `results='asis'` in the code chunk for the plot. I'll
 g
 ```
 
-However, this solution doesn't work with plots that use the `theme()` function, as the dark and light themes will overwrite any custom theme (i.e., the title below should be red, but isn't in either version).
+This doesn't work if you add a complete theme to a plot.
 
-```{r toggle-with-theme, results='asis'}
+```{r toggle-theme-set, results='asis'}
+g + theme_minimal()
+```
+
+However, it will work if you just add theme elements with `theme()`.
+
+```{r toggle-theme, results='asis'}
 g + theme(plot.title = element_text(color = "red"))
 ```
