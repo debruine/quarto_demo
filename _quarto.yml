@@ -18,6 +18,8 @@ format:
       light: [flatly, light.scss]
       dark: [darkly, dark.scss]
     css: styles.css
-
+    comments:
+      hypothesis: 
+        theme: clean
 
 

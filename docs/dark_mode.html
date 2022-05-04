@@ -113,6 +113,12 @@
       "search-submit-button-title": "Submit"
     }
   }</script>
+  <script type="application/json" class="js-hypothesis-config">
+  {
+    "theme": "clean"
+  }
+  </script>
+  <script async="" src="https://hypothes.is/embed.js"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -157,42 +163,47 @@
 <h1>Dark Mode</h1>
 <section id="demo" class="level2">
 <h2 class="anchored" data-anchor-id="demo">Demo</h2>
-<p>Toggle dark and light mode to see the plot switch. Inspired by <a href="https://twitter.com/mariviere1/status/1521534422826237955">Marc-Aurèle Rivière</a>.</p>
+<p>Toggle dark and light mode (there’s a switch in the upper right corner) to see the plot switch. Inspired by <a href="https://twitter.com/mariviere1/status/1521534422826237955">Marc-Aurèle Rivière</a>.</p>
 <div class="cell light-mode">
 <div class="cell-output-display">
-<p><img src="dark_mode_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<p><img src="dark_mode_files/figure-html/light-demo-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
 <div class="cell dark-mode">
 <div class="cell-output-display">
-<p><img src="dark_mode_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<p><img src="dark_mode_files/figure-html/dark-demo-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
 </section>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>Edit the _quarto.yml file to add your light and dark themes, plus .scss files for each</p>
+<p>Edit the _quarto.yml file to add your light and dark themes, plus .scss files for each. The quarto documentation on <a href="https://quarto.org/docs/output-formats/html-themes.html">HTML Theming</a> is a useful reference.</p>
+<p>_quarto.yml:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">light</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">flatly</span><span class="kw">,</span><span class="at"> light.scss</span><span class="kw">]</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">dark</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">darkly</span><span class="kw">,</span><span class="at"> dark.scss</span><span class="kw">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Create .scss files for light and dark mode. Set blocks with the class .light-mode to <code>display: none;</code> in dark mode, and blocks with the class .dark-mode to <code>display: none;</code> in light mode.</p>
+<p>Create .scss files for light and dark mode. Set blocks with the class .light-mode to hide in dark mode, and blocks with the class .dark-mode to hide in light mode. You can also add other rules here to change <a href="https://quarto.org/docs/output-formats/html-themes.html#sass-variables">SASS Variables</a> for the themes. For example, I think the inline code colour is too dark in the darkly theme, and I hate the green links.</p>
 <p>light.scss:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*-- scss:defaults --*/</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">/*-- scss:rules --*/</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">.light-mode</span> { <span class="kw">display</span>: <span class="dv">block</span><span class="op">;</span> }</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">.dark-mode</span> { <span class="kw">display</span>: <span class="dv">none</span><span class="op">;</span> }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>$link-color<span class="in">: #248CFC;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">/*-- scss:rules --*/</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">.light-mode</span> { <span class="kw">display</span>: <span class="dv">block</span><span class="op">;</span> }</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">.dark-mode</span> { <span class="kw">display</span>: <span class="dv">none</span><span class="op">;</span> }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>dark.scss:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*-- scss:defaults --*/</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">/*-- scss:rules --*/</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">.dark-mode</span> { <span class="kw">display</span>: <span class="dv">block</span><span class="op">;</span> }</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">.light-mode</span> { <span class="kw">display</span>: <span class="dv">none</span><span class="op">;</span> }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>$link-color<span class="in">: #248CFC;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>$code-color<span class="in">: #bb8acf</span>;</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">/*-- scss:rules --*/</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">.dark-mode</span> { <span class="kw">display</span>: <span class="dv">block</span><span class="op">;</span> }</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">.light-mode</span> { <span class="kw">display</span>: <span class="dv">none</span><span class="op">;</span> }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="switching" class="level2">
 <h2 class="anchored" data-anchor-id="switching">Switching</h2>
+<p>Now you can make your plots as normal.</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(diamonds, <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">y =</span> price, <span class="at">fill =</span> cut)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>() <span class="sc">+</span></span>
@@ -200,43 +211,71 @@
 </div>
 <p>Add <code>#| classes: light-mode</code> or <code>#| classes: dark-mode</code> to the code chunks to display their output conditionally.</p>
 <div class="cell light-mode">
-<div class="sourceCode" id="cb5"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Light Mode"</span>) <span class="sc">+</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="dark_mode_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<p><img src="dark_mode_files/figure-html/light-demo2-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
 <div class="cell dark-mode">
-<div class="sourceCode" id="cb6"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Dark Mode"</span>) <span class="sc">+</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="dark_mode_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="dark_mode_files/figure-html/dark-demo2-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
+</div>
+<p>This also works for any content. Just put it inside of a div with the appropriate class.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>::: {.light-mode}</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Text that only shows in light mode</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>::: {.dark-mode}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>Text that only shows in dark mode</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="light-mode">
+<p>Text that only shows in light mode</p>
+</div>
+<div class="dark-mode">
+<p>Text that only shows in dark mode</p>
 </div>
 </section>
 <section id="auto-theme" class="level2">
 <h2 class="anchored" data-anchor-id="auto-theme">Auto-theme</h2>
-<p>If you add this code at the top of your script, it will automatically theme plots for you without the code above (you still need the setup). I’m using the ggthemes <code>theme_solarized()</code> in light and dark versions, but you can add any theme you like or a custom theme.</p>
+<p>If you add the following code at the top of your script, it will automatically theme plots for you without the code above (you still need the setup). I’m using <code>ggthemes::theme_solarized()</code> in light and dark versions, but you can add any theme you like or a custom theme.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>knit_print.ggplot <span class="ot">&lt;-</span> <span class="cf">function</span> (x, options, ...) {</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">&lt;div class="dark-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">:::</span><span class="fu">print.ggplot</span>(x <span class="sc">+</span> ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;div class="light-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">:::</span><span class="fu">print.ggplot</span>(x <span class="sc">+</span> ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n\n</span><span class="st">'</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">registerS3method</span>(<span class="st">"knit_print"</span>, <span class="st">"ggplot"</span>, knit_print.ggplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>knit_print.ggplot <span class="ot">&lt;-</span> <span class="cf">function</span> (x, options, ...) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">&lt;div class="dark-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">:::</span><span class="fu">print.ggplot</span>(x <span class="sc">+</span> ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;div class="light-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">:::</span><span class="fu">print.ggplot</span>(x <span class="sc">+</span> ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n\n</span><span class="st">'</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">registerS3method</span>(<span class="st">"knit_print"</span>, <span class="st">"ggplot"</span>, knit_print.ggplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This only works if you set <code>results='asis'</code> in the code chunk for the plot. I’ll see if I can fix this.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="dark-mode">
 <div class="cell-output-display">
-<p><img src="dark_mode_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="dark_mode_files/figure-html/toggle-demo-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
 <div class="light-mode">
 <div class="cell-output-display">
-<p><img src="dark_mode_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
+<p><img src="dark_mode_files/figure-html/toggle-demo-2.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<p>However, this solution doesn’t work with plots that use the <code>theme()</code> function, as the dark and light themes will overwrite any custom theme (i.e., the title below should be red, but isn’t in either version).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="dark-mode">
+<div class="cell-output-display">
+<p><img src="dark_mode_files/figure-html/toggle-with-theme-1.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<div class="light-mode">
+<div class="cell-output-display">
+<p><img src="dark_mode_files/figure-html/toggle-with-theme-2.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
 

@@ -3,31 +3,38 @@
 ```{r, include = FALSE}
 library(ggplot2)
 library(ggthemes)
+knitr::opts_chunk$set(
+  gif.width = 8,
+  fig.height = 3.5,
+  out.width = "100%"
+)
 ```
 
 ## Demo
 
-Toggle dark and light mode to see the plot switch. Inspired by [Marc-Aurèle Rivière](https://twitter.com/mariviere1/status/1521534422826237955).
+Toggle dark and light mode (there's a switch in the upper right corner) to see the plot switch. Inspired by [Marc-Aurèle Rivière](https://twitter.com/mariviere1/status/1521534422826237955).
 
 
-```{r, echo = FALSE}
+```{r light-demo, echo = FALSE}
 #| classes: light-mode
 g <- ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
   geom_violin() +
   labs(title = "Diamond price by cut")
 
-g + theme_solarized(light = TRUE)
+g + labs(subtitle = "Light Mode") + theme_solarized(light = TRUE)
 ```
 
-```{r, echo = FALSE}
+```{r dark-demo, echo = FALSE}
 #| classes: dark-mode
-g + theme_solarized(light = FALSE)
+g + labs(subtitle = "Dark Mode") + theme_solarized(light = FALSE)
 ```
 
 
 ## Setup
 
-Edit the _quarto.yml file to add your light and dark themes, plus .scss files for each
+Edit the _quarto.yml file to add your light and dark themes, plus .scss files for each. The quarto documentation on [HTML Theming](https://quarto.org/docs/output-formats/html-themes.html) is a useful reference.
+
+_quarto.yml:
 
 ```yml
 format:
@@ -37,12 +44,13 @@ format:
       dark: [darkly, dark.scss]
 ```
 
-Create .scss files for light and dark mode. Set blocks with the class .light-mode to `display: none;` in dark mode, and blocks with the class .dark-mode to `display: none;` in light mode.
+Create .scss files for light and dark mode. Set blocks with the class .light-mode to hide in dark mode, and blocks with the class .dark-mode to hide in light mode. You can also add other rules here to change [SASS Variables](https://quarto.org/docs/output-formats/html-themes.html#sass-variables) for the themes. For example, I think the inline code colour is too dark in the darkly theme, and I hate the green links.
 
 light.scss:
 
 ```css
 /*-- scss:defaults --*/
+$link-color: #248CFC;
 
 /*-- scss:rules --*/
 .light-mode { display: block; }
@@ -53,6 +61,8 @@ dark.scss:
 
 ```css
 /*-- scss:defaults --*/
+$link-color: #248CFC;
+$code-color: #bb8acf;
 
 /*-- scss:rules --*/
 .dark-mode { display: block; }
@@ -61,6 +71,7 @@ dark.scss:
 
 ## Switching
 
+Now you can make your plots as normal.
 
 ```{r}
 g <- ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
@@ -70,21 +81,45 @@ g <- ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
 
 Add `#| classes: light-mode` or `#| classes: dark-mode` to the code chunks to display their output conditionally.
 
-```{r}
+```{r light-demo2}
 #| classes: light-mode
-g + theme_solarized(light = TRUE)
+
+g + labs(subtitle = "Light Mode") + 
+  theme_solarized(light = TRUE)
 ```
 
 
-```{r}
+```{r dark-demo2}
 #| classes: dark-mode
-g + theme_solarized(light = FALSE)
+
+g + labs(subtitle = "Dark Mode") + 
+  theme_solarized(light = FALSE)
 ```
 
+
+This also works for any content. Just put it inside of a div with the appropriate class.
+
+```markdown
+::: {.light-mode}
+Text that only shows in light mode
+:::
+
+::: {.dark-mode}
+Text that only shows in dark mode
+:::
+```
+
+::: {.light-mode}
+Text that only shows in light mode
+:::
+
+::: {.dark-mode}
+Text that only shows in dark mode
+:::
 
 ## Auto-theme
 
-If you add this code at the top of your script, it will automatically theme plots for you without the code above (you still need the setup). I'm using the ggthemes `theme_solarized()` in light and dark versions, but you can add any theme you like or a custom theme.
+If you add the following code at the top of your script, it will automatically theme plots for you without the code above (you still need the setup). I'm using `ggthemes::theme_solarized()` in light and dark versions, but you can add any theme you like or a custom theme.
 
 ```{r}
 library(knitr)
@@ -101,8 +136,12 @@ registerS3method("knit_print", "ggplot", knit_print.ggplot)
 
 This only works if you set `results='asis'` in the code chunk for the plot. I'll see if I can fix this. 
 
-```{r, results='asis'}
+```{r toggle-demo, results='asis'}
 g
 ```
 
+However, this solution doesn't work with plots that use the `theme()` function, as the dark and light themes will overwrite any custom theme (i.e., the title below should be red, but isn't in either version).
 
+```{r toggle-with-theme, results='asis'}
+g + theme(plot.title = element_text(color = "red"))
+```
