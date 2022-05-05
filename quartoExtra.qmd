@@ -64,10 +64,16 @@ knitr::opts_chunk$set(
 )
 ```
 
+It also works for patchwork plots, thanks to Marc-Aurèle.
+
+```{r}
+g + g + plot_layout(nrow = 1, guides = "collect")
+```
+
 
 ### Multiple plots
 
-Multiple plots in a chunk is tricky. It only works if you create the plots separately.
+Multiple plots in a chunk is trickier. It only works if you create the plots separately.
 
 ```{r, eval = FALSE}
 g + labs(title = "First plot")
@@ -92,7 +98,7 @@ for (title in titles) {
 However, this hack makes it work. I'll work on getting this to happen with the code above.
 
 ```{r}
-# doesn't work
+# works, but is hacky
 titles <- c("First plot",
             "Second plot")
 for (title in titles) {
@@ -101,32 +107,43 @@ for (title in titles) {
 }
 ```
 
-It does work for patchwork plots, though. 
 
-```{r}
-g + g + plot_layout(nrow = 1, guides = "collect")
-```
 
-### Light mode
+### Dark/Light mode chunks
 
 Your plots might need more customisation than just the dark or light theme, so you can make them in separate code chunks with the class `dark-mode` or `light-mode`.
 
-If you add `#| classes: light-mode` to the chunk, both the chunk source and output will only show in light mode.
+If you add `#| classes: light-mode` to the chunk, both the chunk source and output will only show in light mode. If you add `#| classes: dark-mode` to the chunk, both the chunk source and output will only show in dark mode.
 
-```{r, fig.cap = "This is the light mode caption."}
+```{r, fig.cap = "This is the light mode caption.", out.width = "50%"}
 #| classes: light-mode
+#| source-class: light-mode
 g + labs(title = "Only shows in light mode") +
   ggthemes::theme_solarized(light = TRUE)
 ```
 
-### Dark mode
-
-If you add `#| classes: dark-mode` to the chunk, both the chunk source and output will only show in dark mode.
-
-```{r, fig.cap = "This is the dark mode caption."}
+```{r, fig.cap = "This is the dark mode caption.", out.width = "50%"}
 #| classes: dark-mode
+#| output-class: dark-mode
 g + labs(title = "Only shows in dark mode") +
   ggthemes::theme_solarized(light = FALSE)
+```
+
+This is also true for non-plot outputs.
+
+```{r}
+#| classes: light-mode
+data.frame(mode = "light-mode")
+```
+
+
+
+
+
+
+```{r}
+#| classes: dark-mode
+data.frame(mode = "dark-mode")
 ```
 
 
