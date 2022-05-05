@@ -7,3 +7,4 @@ This website contains my explorations of Quarto.
 
 * [Replicating df_print](table.html)
 * [Dark mode conditional chunks](dark_mode.html)
+* [quartoExtra package](quartoExtra.html)

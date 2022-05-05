@@ -132,23 +132,10 @@
       <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">quarto_demo</span>
   </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="./table.html">df_print</a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="./dark_mode.html" aria-current="page">dark mode</a>
-  </li>  
-</ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
-              <div id="quarto-search" class="" title="Search"></div>
-          </div> <!-- /navcollapse -->
+          <div class="quarto-toggle-container ms-auto">
+              <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+          </div>
+          <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -242,64 +229,74 @@
 <section id="auto-theme" class="level2">
 <h2 class="anchored" data-anchor-id="auto-theme">Auto-theme</h2>
 <p>If you add the following code at the top of your script, it will automatically theme plots for you without the code above (you still need the setup). I’m using <code>ggthemes::theme_solarized()</code> in light and dark versions, but you can add any theme you like or a custom theme.</p>
+<p>Thanks to <a href="https://twitter.com/mariviere1">Marc-Aurèle Rivière</a> for pointing out that the original version using <code>ggplot2:::print.ggplot()</code> didn’t handle patchwork output right, but <code>print()</code> does.</p>
 <div class="cell">
 <div class="sourceCode" id="cb8"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>knit_print.ggplot <span class="ot">&lt;-</span> <span class="cf">function</span> (x, options, ...) {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  orig_theme <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">theme_get</span>()</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">on.exit</span>(ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(orig_theme))</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">&lt;div class="dark-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">:::</span><span class="fu">print.ggplot</span>(x)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;div class="light-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">:::</span><span class="fu">print.ggplot</span>(x)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n\n</span><span class="st">'</span>)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">registerS3method</span>(<span class="st">"knit_print"</span>, <span class="st">"ggplot"</span>, knit_print.ggplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  dark_theme <span class="ot">=</span> ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  light_theme <span class="ot">=</span> ggthemes<span class="sc">::</span><span class="fu">theme_solarized</span>(<span class="at">light =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  orig_theme <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">theme_get</span>()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">on.exit</span>(ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(orig_theme))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get html for light and dark</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">asis_output</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">&lt;div class="dark-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(dark_theme)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(x)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">asis_output</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n</span><span class="st">&lt;div class="light-mode"&gt;</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(light_theme)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(x)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">asis_output</span>(<span class="st">'&lt;/div&gt;</span><span class="sc">\n\n</span><span class="st">'</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="fu">registerS3method</span>(<span class="st">"knit_print"</span>, <span class="st">"ggplot"</span>, knit_print.ggplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This only works if you set <code>results='asis'</code> in the code chunk for the plot. I’ll see if I can fix this.</p>
+<div class="cell">
 <div class="sourceCode" id="cb9"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="dark-mode">
 <div class="cell-output-display">
 <p><img src="dark_mode_files/figure-html/toggle-demo-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
-</div>
-<div class="light-mode">
 <div class="cell-output-display">
 <p><img src="dark_mode_files/figure-html/toggle-demo-2.png" class="img-fluid" style="width:100.0%"></p>
 </div>
+<div class="cell-output-display">
 </div>
+</div>
+</section></section></main></div>
 <p>This doesn’t work if you add a complete theme to a plot.</p>
+<div class="cell">
 <div class="sourceCode" id="cb10"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="dark-mode">
 <div class="cell-output-display">
 <p><img src="dark_mode_files/figure-html/toggle-theme-set-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
-</div>
-<div class="light-mode">
 <div class="cell-output-display">
 <p><img src="dark_mode_files/figure-html/toggle-theme-set-2.png" class="img-fluid" style="width:100.0%"></p>
 </div>
+<div class="cell-output-display">
 </div>
+</div>
+
 <p>However, it will work if you just add theme elements with <code>theme()</code>.</p>
+<div class="cell">
 <div class="sourceCode" id="cb11"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="dark-mode">
 <div class="cell-output-display">
 <p><img src="dark_mode_files/figure-html/toggle-theme-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
-</div>
-<div class="light-mode">
 <div class="cell-output-display">
 <p><img src="dark_mode_files/figure-html/toggle-theme-2.png" class="img-fluid" style="width:100.0%"></p>
 </div>
+<div class="cell-output-display">
+</div>
 </div>
 
 
-</section>
-</section>
-</main> <!-- /main -->
+
+
+
+ <!-- /main -->
 <script type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const disableStylesheet = (stylesheets) => {
@@ -473,7 +470,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+ <!-- /content -->
 
 
 </body></html>

@@ -6,11 +6,6 @@ website:
   title: "quarto_demo"
   navbar:
     background: primary
-    right:
-      - href: table.qmd
-        text: df_print
-      - href: dark_mode.qmd
-        text: dark mode
 
 format:
   html:

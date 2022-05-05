@@ -1,0 +1,105 @@
+---
+title: "quartoExtra"
+---
+
+The [quartoExtra](https://github.com/debruine/quartoExtra) package implements the fixes and additions on this site. Install from GitHub using `devtools::install_github("debruine/quartoExtra")`.
+
+```{r, message=FALSE}
+library(ggplot2)
+library(patchwork)
+
+#devtools::install_github("debruine/quartoExtra")
+library(quartoExtra)
+```
+
+## Setup 
+
+The dark mode toggle only works for projects with a _quarto.yml file (e.g., books and websites) set up in the right way, with dark and light .scss files. `darkmode_setup()` is a convenience function that adds the dark and light .scss files (or updates existing ones) and creates/updates the _quarto.yml file to use the light and dark and themes you specify (defaults to flatly and darkly).
+
+```{r, eval = FALSE}
+darkmode_setup(light_theme = "cosmo",
+               dark_theme = "slate")
+```
+
+Turn on dark mode toggling on any page by setting:
+
+```{r}
+options(quartoExtra.darkmode = TRUE)
+```
+
+## Plots
+
+```{r}
+g <- ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
+  geom_violin()
+```
+
+Plots will toggle light and dark mode. You need to set `results='asis'` in the code chunk (for now; I'm trying to figure out how to avoid that).
+
+```{r, results='asis', fig.width = 8, fig.height = 3}
+g + labs(title = "Toggles between light and dark mode")
+```
+
+It also works for patchwork plots.
+
+```{r, results='asis', fig.width = 8, fig.height = 3}
+p <- g + g + plot_layout(nrow = 1, guides = "collect")
+
+p
+```
+
+If you add `#| classes: light-mode` to the chunk, this chunk output will only show in light mode.
+
+```{r, results='asis', fig.width = 8, fig.height = 3}
+#| classes: light-mode
+g + labs(title = "Only shows in light mode")
+```
+
+If you add `#| classes: dark-mode` to the chunk, this chunk output will only show in dark mode.
+
+```{r, results='asis', fig.width = 8, fig.height = 3}
+#| classes: dark-mode
+g + labs(title = "Only shows in dark mode")
+```
+
+
+
+
+## Tables
+
+Set the "quartoExtra.df_print" option to render tables using kable or as paged tables.
+
+```{r}
+tbl <- data.frame(
+  number = 1:26,
+  letter = LETTERS[1:26]
+)
+```
+
+```{r}
+# default printing
+tbl
+```
+
+### Paged
+
+```{r}
+options(quartoExtra.df_print = "paged")
+```
+
+```{r}
+# print as paged
+tbl
+```
+
+### Kable
+
+```{r}
+options(quartoExtra.df_print = "kable")
+```
+
+```{r}
+# print as kable
+tbl
+```
+

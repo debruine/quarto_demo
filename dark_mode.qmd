@@ -121,38 +121,46 @@ Text that only shows in dark mode
 
 If you add the following code at the top of your script, it will automatically theme plots for you without the code above (you still need the setup). I'm using `ggthemes::theme_solarized()` in light and dark versions, but you can add any theme you like or a custom theme.
 
+Thanks to [Marc-Aurèle Rivière](https://twitter.com/mariviere1) for pointing out that the original version using `ggplot2:::print.ggplot()` didn't handle patchwork output right, but `print()` does.
+
 ```{r}
 library(knitr)
 knit_print.ggplot <- function (x, options, ...) {
+  dark_theme = ggthemes::theme_solarized(light = FALSE)
+  light_theme = ggthemes::theme_solarized(light = TRUE)
+
   orig_theme <- ggplot2::theme_get()
   on.exit(ggplot2::theme_set(orig_theme))
+
+  # get html for light and dark
+  knitr::asis_output('\n<div class="dark-mode">\n')
   
-  cat('\n<div class="dark-mode">\n')
-  ggplot2::theme_set(ggthemes::theme_solarized(light = FALSE))
-  ggplot2:::print.ggplot(x)
-  cat('</div>\n')
-  cat('<div class="light-mode">\n')
-  ggplot2::theme_set(ggthemes::theme_solarized(light = TRUE))
-  ggplot2:::print.ggplot(x)
-  cat('</div>\n\n')
+  ggplot2::theme_set(dark_theme)
+  print(x)
+  
+  knitr::asis_output('</div>\n<div class="light-mode">\n')
+  
+  ggplot2::theme_set(light_theme)
+  print(x)
+  
+  knitr::asis_output('</div>\n\n')
 }
 registerS3method("knit_print", "ggplot", knit_print.ggplot)
 ```
 
-This only works if you set `results='asis'` in the code chunk for the plot. I'll see if I can fix this. 
 
-```{r toggle-demo, results='asis'}
+```{r toggle-demo}
 g
 ```
 
 This doesn't work if you add a complete theme to a plot.
 
-```{r toggle-theme-set, results='asis'}
+```{r toggle-theme-set}
 g + theme_minimal()
 ```
 
 However, it will work if you just add theme elements with `theme()`.
 
-```{r toggle-theme, results='asis'}
+```{r toggle-theme}
 g + theme(plot.title = element_text(color = "red"))
 ```
