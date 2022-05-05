@@ -1,10 +1,8 @@
----
-title: "Quarto demo"
-author: "Lisa DeBruine"
----
+This website contains my explorations of Quarto. I'm adding fixes and additions to a package:
 
-This website contains my explorations of Quarto.
+* Intro to [quartoExtra](quartoExtra.html)
+
+Blog posts about quarto:
 
 * [Replicating df_print](table.html)
 * [Dark mode conditional chunks](dark_mode.html)
-* [quartoExtra package](quartoExtra.html)

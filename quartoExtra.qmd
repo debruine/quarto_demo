@@ -1,5 +1,9 @@
 ---
 title: "quartoExtra"
+format:
+  html:
+    toc: true
+    toc-depth: 3
 ---
 
 The [quartoExtra](https://github.com/debruine/quartoExtra) package implements the fixes and additions on this site. Install from GitHub using `devtools::install_github("debruine/quartoExtra")`.
@@ -14,18 +18,26 @@ library(quartoExtra)
 
 ## Setup 
 
-The dark mode toggle only works for projects with a _quarto.yml file (e.g., books and websites) set up in the right way, with dark and light .scss files. `darkmode_setup()` is a convenience function that adds the dark and light .scss files (or updates existing ones) and creates/updates the _quarto.yml file to use the light and dark and themes you specify (defaults to flatly and darkly).
+### Project Setup
+
+The dark mode toggle only works for projects with a _quarto.yml file (e.g., books and websites) set up in the right way, with dark and light .scss files. `darkmode_setup()` is a convenience function that adds the dark and light .scss files (or updates existing ones) and creates/updates the _quarto.yml file to use the light and dark and themes you specify (defaults to flatly and darkly). This should only be done once for each project and in the console, not in a script.
 
 ```{r, eval = FALSE}
 darkmode_setup(light_theme = "cosmo",
                dark_theme = "slate")
 ```
 
-Turn on dark mode toggling on any page by setting:
+### Theme setup
+
+You can, however, set the dark and light ggplot themes in scripts.
 
 ```{r}
-options(quartoExtra.darkmode = TRUE)
+darkmode_theme_set(
+  dark = ggthemes::theme_stata(scheme = "s1rcolor"),
+  light = ggthemes::theme_stata(scheme = "s1color")
+)
 ```
+
 
 ## Plots
 
@@ -34,40 +46,111 @@ g <- ggplot(diamonds, aes(x = cut, y = price, fill = cut)) +
   geom_violin()
 ```
 
-Plots will toggle light and dark mode. You need to set `results='asis'` in the code chunk (for now; I'm trying to figure out how to avoid that).
+Plots will toggle light and dark mode if you set `#| classes: dark-light` in the chunk.
 
-```{r, results='asis', fig.width = 8, fig.height = 3}
+```{r, fig.width = 8, fig.height = 3, fig.cap = "My figure caption."}
+#| classes: dark-light
+
 g + labs(title = "Toggles between light and dark mode")
 ```
 
-It also works for patchwork plots.
+Set `classes = "dark-light"` in the knitr chunk option defaults if you don't want to have to type it in each figure chunk.
 
-```{r, results='asis', fig.width = 8, fig.height = 3}
-p <- g + g + plot_layout(nrow = 1, guides = "collect")
-
-p
+```{r}
+knitr::opts_chunk$set(
+  classes = "dark-light",
+  fig.width = 8,
+  fig.height = 3
+)
 ```
 
-If you add `#| classes: light-mode` to the chunk, this chunk output will only show in light mode.
 
-```{r, results='asis', fig.width = 8, fig.height = 3}
+### Multiple plots
+
+Multiple plots in a chunk is tricky. It only works if there is some code between each plot.
+
+```{r}
+#| results: hold
+g + labs(title = "First plot")
+g + labs(title = "Second plot")
+```
+
+However, it doesn't work if you hide the code chunk or you're making plots in a function or for loop and have to use `print()` to display them.
+
+```{r, results='hold'}
+titles <- c("First plot",
+            "Second plot")
+for (title in titles) {
+  print(g + labs(title = title))
+}
+```
+
+
+```{r, eval = FALSE, include = FALSE, results='hold'}
+# doesn't work
+titles <- c("First plot",
+            "Second plot")
+for (title in titles) {
+  knitr::knit_print(g + labs(title = title),
+                    options = knitr::opts_current$get())
+}
+```
+
+It does work for patchwork plots, though. 
+
+```{r}
+g + g + plot_layout(nrow = 1, guides = "collect")
+```
+
+### Light mode
+
+Your plots might need more customisation than just the dark or light theme, so you can make them in separate code chunks with the class `dark-mode` or `light-mode`.
+
+If you add `#| classes: light-mode` to the chunk, both the chunk source and output will only show in light mode.
+
+```{r, fig.cap = "This is the light mode caption."}
 #| classes: light-mode
 g + labs(title = "Only shows in light mode")
 ```
 
-If you add `#| classes: dark-mode` to the chunk, this chunk output will only show in dark mode.
+### Dark mode
 
-```{r, results='asis', fig.width = 8, fig.height = 3}
+If you add `#| classes: dark-mode` to the chunk, both the chunk source and output will only show in dark mode.
+
+```{r, fig.cap = "This is the dark mode caption."}
 #| classes: dark-mode
 g + labs(title = "Only shows in dark mode")
 ```
 
 
+## Non-code
+
+This also works for non-code content. Just put it inside of a div with the appropriate class.
+
+```markdown
+::: {.light-mode}
+Text that only shows in light mode
+:::
+
+::: {.dark-mode}
+Text that only shows in dark mode
+:::
+```
+
+::: {.light-mode}
+Text that only shows in light mode
+:::
+
+::: {.dark-mode}
+Text that only shows in dark mode
+:::
 
 
 ## Tables
 
-Set the "quartoExtra.df_print" option to render tables using kable or as paged tables.
+Set the "quartoExtra.df_print" option to render all subsequent tables using kable or as paged tables (more options coming soon).
+
+### Default
 
 ```{r}
 tbl <- data.frame(

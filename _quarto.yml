@@ -1,20 +1,25 @@
 project:
   type: website
   output-dir: docs
-
 website:
-  title: "quarto_demo"
+  title: quartoExtra
   navbar:
     background: primary
-
+    pinned: true
+    logo: images/logos/logo.png
+  image: images/logos/logo.png
+  favicon: images/logos/favicon.ico
+  google-analytics: "G-6NP3MF25W3"
 format:
   html:
     theme:
-      light: [flatly, light.scss]
-      dark: [darkly, dark.scss]
+      dark:
+      - darkly
+      - dark.scss
+      light:
+      - flatly
+      - light.scss
     css: styles.css
     comments:
-      hypothesis: 
+      hypothesis:
         theme: clean
-
-

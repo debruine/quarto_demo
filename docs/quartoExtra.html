@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="quarto-0.9.80">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>quarto_demo - quartoExtra</title>
+  <title>quartoExtra</title>
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -77,12 +77,12 @@
   </style>
 
   <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-  <script src="site_libs/quarto-nav/headroom.min.js"></script>
   <script src="site_libs/clipboard/clipboard.min.js"></script>
   <meta name="quarto:offset" content="./">
   <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
   <script src="site_libs/quarto-search/fuse.min.js"></script>
   <script src="site_libs/quarto-search/quarto-search.js"></script>
+  <link href="./images/logos/favicon.ico" rel="icon">
   <script src="site_libs/quarto-html/quarto.js"></script>
   <script src="site_libs/quarto-html/popper.min.js"></script>
   <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -113,6 +113,15 @@
       "search-submit-button-title": "Submit"
     }
   }</script>
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6NP3MF25W3"></script>
+
+  <script type="text/javascript">
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6NP3MF25W3', { 'anonymize_ip': true});
+  </script>
   <script type="application/json" class="js-hypothesis-config">
   {
     "theme": "clean"
@@ -126,13 +135,14 @@
   <![endif]-->
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="fullcontent">
+<body>
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">quarto_demo</span>
+    <img src="./images/logos/logo.png" alt="">
+    <span class="navbar-title">quartoExtra</span>
   </a>
           <div class="quarto-toggle-container ms-auto">
               <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -145,12 +155,37 @@
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+<h2 id="toc-title">On this page</h2>
+<ul>
+<li><a href="#setup" class="nav-link active" data-scroll-target="#setup">Setup</a>
+<ul class="collapse">
+<li><a href="#project-setup" class="nav-link" data-scroll-target="#project-setup">Project Setup</a></li>
+<li><a href="#theme-setup" class="nav-link" data-scroll-target="#theme-setup">Theme setup</a></li>
+</ul></li>
+<li><a href="#plots" class="nav-link" data-scroll-target="#plots">Plots</a>
+<ul class="collapse">
+<li><a href="#multiple-plots" class="nav-link" data-scroll-target="#multiple-plots">Multiple plots</a></li>
+<li><a href="#light-mode" class="nav-link" data-scroll-target="#light-mode">Light mode</a></li>
+<li><a href="#dark-mode" class="nav-link" data-scroll-target="#dark-mode">Dark mode</a></li>
+</ul></li>
+<li><a href="#non-code" class="nav-link" data-scroll-target="#non-code">Non-code</a></li>
+<li><a href="#tables" class="nav-link" data-scroll-target="#tables">Tables</a>
+<ul class="collapse">
+<li><a href="#default" class="nav-link" data-scroll-target="#default">Default</a></li>
+<li><a href="#paged" class="nav-link" data-scroll-target="#paged">Paged</a></li>
+<li><a href="#kable" class="nav-link" data-scroll-target="#kable">Kable</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 <header id="title-block-header" class="quarto-title-block default">
 
 <div class="quarto-title"><h1 class="title display-7">quartoExtra</h1></div></header>
+
 <p>The <a href="https://github.com/debruine/quartoExtra">quartoExtra</a> package implements the fixes and additions on this site. Install from GitHub using <code>devtools::install_github("debruine/quartoExtra")</code>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -161,15 +196,24 @@
 </div>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>The dark mode toggle only works for projects with a _quarto.yml file (e.g., books and websites) set up in the right way, with dark and light .scss files. <code>darkmode_setup()</code> is a convenience function that adds the dark and light .scss files (or updates existing ones) and creates/updates the _quarto.yml file to use the light and dark and themes you specify (defaults to flatly and darkly).</p>
+<section id="project-setup" class="level3">
+<h3 class="anchored" data-anchor-id="project-setup">Project Setup</h3>
+<p>The dark mode toggle only works for projects with a _quarto.yml file (e.g., books and websites) set up in the right way, with dark and light .scss files. <code>darkmode_setup()</code> is a convenience function that adds the dark and light .scss files (or updates existing ones) and creates/updates the _quarto.yml file to use the light and dark and themes you specify (defaults to flatly and darkly). This should only be done once for each project and in the console, not in a script.</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">darkmode_setup</span>(<span class="at">light_theme =</span> <span class="st">"cosmo"</span>,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">dark_theme =</span> <span class="st">"slate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Turn on dark mode toggling on any page by setting:</p>
+</section>
+<section id="theme-setup" class="level3">
+<h3 class="anchored" data-anchor-id="theme-setup">Theme setup</h3>
+<p>You can, however, set the dark and light ggplot themes in scripts.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">quartoExtra.darkmode =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">darkmode_theme_set</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">dark =</span> ggthemes<span class="sc">::</span><span class="fu">theme_stata</span>(<span class="at">scheme =</span> <span class="st">"s1rcolor"</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">light =</span> ggthemes<span class="sc">::</span><span class="fu">theme_stata</span>(<span class="at">scheme =</span> <span class="st">"s1color"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 </section>
 <section id="plots" class="level2">
 <h2 class="anchored" data-anchor-id="plots">Plots</h2>
@@ -177,59 +221,141 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(diamonds, <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">y =</span> price, <span class="at">fill =</span> cut)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Plots will toggle light and dark mode. You need to set <code>results='asis'</code> in the code chunk (for now; I’m trying to figure out how to avoid that).</p>
+<p>Plots will toggle light and dark mode if you set <code>#| classes: dark-light</code> in the chunk.</p>
+<div class="cell dark-light">
 <div class="sourceCode" id="cb5"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Toggles between light and dark mode"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="dark-mode">
 <div class="cell-output-display">
-<p><img src="quartoExtra_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="768"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="quartoExtra_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="768"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">My figure caption.</figcaption><p></p>
+</figure>
 </div>
 </div>
-<div class="light-mode">
 <div class="cell-output-display">
-<p><img src="quartoExtra_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="768"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="quartoExtra_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="768"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">My figure caption.</figcaption><p></p>
+</figure>
 </div>
 </div>
-<p>It also works for patchwork plots.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> g <span class="sc">+</span> g <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">guides =</span> <span class="st">"collect"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="dark-mode">
-<div class="cell-output-display">
-<p><img src="quartoExtra_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="768"></p>
 </div>
+<p>Set <code>classes = "dark-light"</code> in the knitr chunk option defaults if you don’t want to have to type it in each figure chunk.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">classes =</span> <span class="st">"dark-light"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fig.width =</span> <span class="dv">8</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fig.height =</span> <span class="dv">3</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="light-mode">
-<div class="cell-output-display">
-<p><img src="quartoExtra_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="768"></p>
-</div>
-</div>
-<p>If you add <code>#| classes: light-mode</code> to the chunk, this chunk output will only show in light mode.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Only shows in light mode"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="light-mode">
+<section id="multiple-plots" class="level3">
+<h3 class="anchored" data-anchor-id="multiple-plots">Multiple plots</h3>
+<p>Multiple plots in a chunk is tricky. It only works if there is some code between each plot.</p>
+<div class="cell dark-light">
+<div class="sourceCode" id="cb7"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"First plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="quartoExtra_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
 </div>
+<div class="cell-output-display">
+<p><img src="quartoExtra_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="768"></p>
 </div>
-<p>If you add <code>#| classes: dark-mode</code> to the chunk, this chunk output will only show in dark mode.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Only shows in dark mode"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="dark-mode">
+<div class="sourceCode" id="cb8"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Second plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="quartoExtra_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="768"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="quartoExtra_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>However, it doesn’t work if you hide the code chunk or you’re making plots in a function or for loop and have to use <code>print()</code> to display them.</p>
+<div class="cell dark-light">
+<div class="sourceCode" id="cb9"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>titles <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"First plot"</span>,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Second plot"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (title <span class="cf">in</span> titles) {</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(g <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> title))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="quartoExtra_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
 </div>
+<div class="cell-output-display">
+<p><img src="quartoExtra_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>It does work for patchwork plots, though.</p>
+<div class="cell dark-light">
+<div class="sourceCode" id="cb10"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> g <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">guides =</span> <span class="st">"collect"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="quartoExtra_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="768"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="quartoExtra_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+<section id="light-mode" class="level3">
+<h3 class="anchored" data-anchor-id="light-mode">Light mode</h3>
+<p>Your plots might need more customisation than just the dark or light theme, so you can make them in separate code chunks with the class <code>dark-mode</code> or <code>light-mode</code>.</p>
+<p>If you add <code>#| classes: light-mode</code> to the chunk, both the chunk source and output will only show in light mode.</p>
+<div class="cell light-mode">
+<div class="sourceCode" id="cb11"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Only shows in light mode"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="quartoExtra_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="768"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">This is the light mode caption.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="dark-mode" class="level3">
+<h3 class="anchored" data-anchor-id="dark-mode">Dark mode</h3>
+<p>If you add <code>#| classes: dark-mode</code> to the chunk, both the chunk source and output will only show in dark mode.</p>
+<div class="cell dark-mode">
+<div class="sourceCode" id="cb12"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Only shows in dark mode"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="quartoExtra_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="768"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">This is the dark mode caption.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="non-code" class="level2">
+<h2 class="anchored" data-anchor-id="non-code">Non-code</h2>
+<p>This also works for non-code content. Just put it inside of a div with the appropriate class.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>::: {.light-mode}</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>Text that only shows in light mode</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>::: {.dark-mode}</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>Text that only shows in dark mode</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="light-mode">
+<p>Text that only shows in light mode</p>
+</div>
+<div class="dark-mode">
+<p>Text that only shows in dark mode</p>
 </div>
 </section>
 <section id="tables" class="level2">
 <h2 class="anchored" data-anchor-id="tables">Tables</h2>
-<p>Set the “quartoExtra.df_print” option to render tables using kable or as paged tables.</p>
-<div class="cell">
-<div class="sourceCode" id="cb9"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tbl <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">26</span>,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">letter =</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">26</span>]</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Set the “quartoExtra.df_print” option to render all subsequent tables using kable or as paged tables (more options coming soon).</p>
+<section id="default" class="level3">
+<h3 class="anchored" data-anchor-id="default">Default</h3>
+<div class="cell dark-light">
+<div class="sourceCode" id="cb14"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>tbl <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">26</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">letter =</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">26</span>]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode" id="cb10"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># default printing</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell dark-light">
+<div class="sourceCode" id="cb15"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># default printing</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
 <pre><code>   number letter
 1       1      A
@@ -260,14 +386,15 @@
 26     26      Z</code></pre>
 </div>
 </div>
+</section>
 <section id="paged" class="level3">
 <h3 class="anchored" data-anchor-id="paged">Paged</h3>
-<div class="cell">
-<div class="sourceCode" id="cb12"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">quartoExtra.df_print =</span> <span class="st">"paged"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell dark-light">
+<div class="sourceCode" id="cb17"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">quartoExtra.df_print =</span> <span class="st">"paged"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode" id="cb13"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print as paged</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell dark-light">
+<div class="sourceCode" id="cb18"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print as paged</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
@@ -279,12 +406,12 @@
 </section>
 <section id="kable" class="level3">
 <h3 class="anchored" data-anchor-id="kable">Kable</h3>
-<div class="cell">
-<div class="sourceCode" id="cb14"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">quartoExtra.df_print =</span> <span class="st">"kable"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell dark-light">
+<div class="sourceCode" id="cb19"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">quartoExtra.df_print =</span> <span class="st">"kable"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode" id="cb15"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print as kable</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell dark-light">
+<div class="sourceCode" id="cb20"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print as kable</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
