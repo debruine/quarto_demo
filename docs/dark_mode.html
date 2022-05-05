@@ -89,11 +89,11 @@
   <script src="site_libs/quarto-html/anchor.min.js"></script>
   <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
   <link class="quarto-color-scheme" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+  <link class="quarto-color-scheme quarto-color-alternate" href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet">
   <script src="site_libs/bootstrap/bootstrap.min.js"></script>
   <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
   <link class="quarto-color-scheme" href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="site_libs/bootstrap/bootstrap-dark.min.css">
+  <link class="quarto-color-scheme quarto-color-alternate" href="site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet">
   <script id="quarto-search-options" type="application/json">{
     "location": "navbar",
     "copy-button": false,
@@ -171,6 +171,7 @@
 <p><img src="dark_mode_files/figure-html/dark-demo-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
+<p>The rest of this post shows my first iteration of the darkmode toggle. The version in <a href="quartoExtra.html">quartoExtra</a> is more complex to try to deal with special cases, so doesn’t work exactly like this.</p>
 </section>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
@@ -382,7 +383,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  let localAlternateSentinel = 'alternate';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 

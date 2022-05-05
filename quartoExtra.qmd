@@ -67,15 +67,19 @@ knitr::opts_chunk$set(
 
 ### Multiple plots
 
-Multiple plots in a chunk is tricky. It only works if there is some code between each plot.
+Multiple plots in a chunk is tricky. It only works if you create the plots separately.
 
-```{r}
-#| results: hold
+```{r, eval = FALSE}
 g + labs(title = "First plot")
 g + labs(title = "Second plot")
 ```
 
-However, it doesn't work if you hide the code chunk or you're making plots in a function or for loop and have to use `print()` to display them.
+```{r, echo = FALSE}
+g + labs(title = "First plot")
+g + labs(title = "Second plot")
+```
+
+It doesn't work if you're making plots in a function or for loop and have to use `print()` to display them.
 
 ```{r, results='hold'}
 titles <- c("First plot",
@@ -85,8 +89,9 @@ for (title in titles) {
 }
 ```
 
+However, this hack makes it work. I'll work on getting this to happen with the code above.
 
-```{r, eval = FALSE, include = FALSE, results='hold'}
+```{r}
 # doesn't work
 titles <- c("First plot",
             "Second plot")
@@ -110,7 +115,8 @@ If you add `#| classes: light-mode` to the chunk, both the chunk source and outp
 
 ```{r, fig.cap = "This is the light mode caption."}
 #| classes: light-mode
-g + labs(title = "Only shows in light mode")
+g + labs(title = "Only shows in light mode") +
+  ggthemes::theme_solarized(light = TRUE)
 ```
 
 ### Dark mode
@@ -119,7 +125,8 @@ If you add `#| classes: dark-mode` to the chunk, both the chunk source and outpu
 
 ```{r, fig.cap = "This is the dark mode caption."}
 #| classes: dark-mode
-g + labs(title = "Only shows in dark mode")
+g + labs(title = "Only shows in dark mode") +
+  ggthemes::theme_solarized(light = FALSE)
 ```
 
 

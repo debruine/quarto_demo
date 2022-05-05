@@ -29,6 +29,8 @@ g + labs(subtitle = "Light Mode") + theme_solarized(light = TRUE)
 g + labs(subtitle = "Dark Mode") + theme_solarized(light = FALSE)
 ```
 
+The rest of this post shows my first iteration of the darkmode toggle. The version in [quartoExtra](quartoExtra.html) is more complex to try to deal with special cases, so doesn't work exactly like this.
+
 
 ## Setup
 
